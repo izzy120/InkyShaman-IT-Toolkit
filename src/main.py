@@ -38,6 +38,7 @@ from network_info import (
     test_internet_connection
 )
 
+from hardware_info import show_hardware_info
 
 # ============================================================
 # FUNCTION: show_system_info()
@@ -309,7 +310,8 @@ def main():
         print()
         print("1. System Information")
         print("2. Network Diagnostics")
-        print("3. Exit")
+        print("3. Hardware Diagnostics")
+        print("4. Exit")
         print()
 
 
@@ -404,17 +406,21 @@ def main():
 
             input("\nPress Enter to return to the menu...")
 
+        elif choice == "3":
+            #FUNCTION CALL
+            #Runs the hardware diagnostic module.
+            show_hardware_info()
+
 
         # ====================================================
         # EXIT CONDITION
         # ====================================================
-        # If the user chooses option 3, we stop the while loop.
+        # If the user chooses option 4, we stop the while loop.
         # ====================================================
 
-        elif choice == "3":
+        elif choice == "4":
 
             print("\nExiting InkyShaman IT Toolkit...")
-
 
             # ------------------------------------------------
             # BREAK
@@ -442,6 +448,7 @@ def main():
         # "1"
         # "2"
         # "3"
+        # "4"
         #
         # the program reaches this block.
         # ====================================================
