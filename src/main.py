@@ -293,8 +293,8 @@ def main():
         # ----------------------------------------------------
 
         print("\n========================================")
-        print("       INKYSHAMAN IT TOOLKIT")
-        print("              v1.0")
+        print("       Sintinel IT Toolkit   ")
+        print("              v0.1.0")
         print("========================================")
 
 
@@ -420,7 +420,7 @@ def main():
 
         elif choice == "4":
 
-            print("\nExiting InkyShaman IT Toolkit...")
+            print("\nExiting Sintinel IT Toolkit...")
 
             # ------------------------------------------------
             # BREAK

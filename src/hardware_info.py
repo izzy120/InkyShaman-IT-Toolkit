@@ -9,6 +9,8 @@
 import platform
 import psutil
 import subprocess
+import ctypes
+from ctypes import wintypes
 
 
 # ============================================================
@@ -19,21 +21,44 @@ import subprocess
 
 # ============================================================
 # GPU DETECTION
-# TYPE: Variable + System Command
-# PURPOSE: Ask Windows for the installed GPU name.
+# ============================================================
+# TYPE: Variables + System Command
+# PURPOSE: Detect the GPU name and actual VRAM.
+#
+# For NVIDIA GPUs, we use nvidia-smi because it reads the
+# information directly from the NVIDIA driver.
 # ============================================================
 
-gpu_result = subprocess.run(
-    [
-        "powershell",
-        "-Command",
-        "Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name"
-    ],
-    capture_output=True,
-    text=True
-)
+gpu_name = "Unknown"
+gpu_vram = "Unknown"
 
-gpu_name = gpu_result.stdout.strip()
+try:
+    gpu_result = subprocess.run(
+        [
+            "nvidia-smi",
+            "--query-gpu=name,memory.total",
+            "--format=csv,noheader,nounits"
+        ],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+
+    gpu_line = gpu_result.stdout.strip().splitlines()[0]
+
+    gpu_parts = gpu_line.split(",")
+
+    gpu_name = gpu_parts[0].strip()
+
+    gpu_vram = round(
+        int(gpu_parts[1].strip()) / 1024,
+        2
+    )
+
+except (FileNotFoundError, IndexError, ValueError, subprocess.CalledProcessError):
+    gpu_name = "Unknown"
+    gpu_vram = "Unknown"
+
 
 def get_hardware_info():
 
@@ -46,6 +71,8 @@ def get_hardware_info():
         "CPU": platform.processor(),
 
         "GPU": gpu_name,
+
+        "GPU VRAM": f"{gpu_vram}gb",
 
         # TYPE: Integer / Function Call
         # Gets the number of physical CPU cores.
